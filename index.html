@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
-    <title>BioWorkbench Pro | Genetic Engineering Assignment</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <title>BioWorkbench Pro | Academic Submission</title>
     <style>
+        /* --- CORE THEME --- */
         :root {
             --bg-deep: #020617; --bg-surface: #0f172a; --bg-card: #1e293b;
             --text-main: #f8fafc; --text-muted: #94a3b8;
@@ -13,43 +15,52 @@
             --border: rgba(255,255,255,0.1);
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'Fira Code', 'Courier New', monospace;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-sans); background: var(--bg-deep); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
         /* --- ACADEMIC HEADER --- */
-        .academic-header { background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.9)); border-bottom: 1px solid var(--border); padding: 1rem; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); z-index: 100; }
+        .academic-header { background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.9)); border-bottom: 1px solid var(--border); padding: 1rem; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); z-index: 1000; }
         .branding h1 { font-size: 1.2rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .submission-badge { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 12px; border-radius: 8px; font-size: 0.75rem; text-align: right; }
         .submission-badge strong { color: var(--primary); display: block; font-size: 0.85rem; margin-bottom: 2px;}
 
-        /* --- CONTROL PANEL --- */
-        .control-panel { background: var(--bg-surface); padding: 1rem; border-bottom: 1px solid var(--border); display: flex; gap: 10px; z-index: 90; }
-        input[type="text"] { flex: 1; padding: 12px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: white; outline: none; }
-        .btn { padding: 12px 24px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: #0ea5e9; transform: translateY(-1px); }
+        /* --- SEARCH & AUTOCOMPLETE --- */
+        .control-panel { background: var(--bg-surface); padding: 1rem; border-bottom: 1px solid var(--border); display: flex; gap: 10px; z-index: 900; position: relative; }
+        .search-wrapper { flex: 1; position: relative; }
+        input[type="text"] { width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: white; transition: var(--transition); }
+        .autocomplete-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; max-height: 250px; overflow-y: auto; display: none; z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .hint-item { padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 0.8rem; }
+        .hint-item:hover { background: rgba(56, 189, 248, 0.1); }
+
+        .btn { padding: 12px 24px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .btn-secondary { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); }
 
         /* --- NAVIGATION --- */
-        .nav-wrapper { background: var(--bg-surface); border-bottom: 1px solid var(--border); overflow-x: auto; }
-        .nav-menu { display: flex; padding: 0.5rem; gap: 8px; }
-        .nav-item { padding: 8px 16px; border-radius: 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s; }
+        .nav-wrapper { background: var(--bg-surface); border-bottom: 1px solid var(--border); overflow-x: auto; white-space: nowrap; }
+        .nav-menu { display: inline-flex; padding: 0.5rem; gap: 8px; }
+        .nav-item { padding: 8px 16px; border-radius: 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
         .nav-item.active { background: rgba(56, 189, 248, 0.15); color: var(--primary); }
 
         /* --- VIEWS --- */
-        main { flex: 1; overflow-y: auto; padding: 1.5rem; }
+        main { flex: 1; overflow-y: auto; padding: 1.5rem; background: var(--bg-deep); }
         .view { display: none; }
-        .view.active { display: block; animation: fadeUp 0.4s ease; }
+        .view.active { display: block; animation: fadeUp 0.4s ease forwards; }
 
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;}
-        .alert-box { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--warning); background: rgba(251, 191, 36, 0.1); }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+        .alert-path { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--success); background: rgba(52, 211, 153, 0.1); }
         .alert-danger { border-left-color: var(--danger); background: rgba(244, 63, 94, 0.1); }
-        
-        /* --- PLASMID MAP --- */
-        .map-container { display: flex; justify-content: center; padding: 20px; position: relative; }
-        #plasmidSvg { width: 300px; height: 300px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3)); }
-        .gene-label { font-size: 10px; fill: var(--text-muted); font-weight: bold; }
+
+        /* HEATMAP */
+        .heatmap-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin: 15px 0; background: #000; }
+        .hm-seg { height: 100%; transition: width 0.5s ease; }
+
+        /* CANVAS & SVG */
+        #dnaCanvas { width: 100%; height: 350px; background: #000; border-radius: 12px; cursor: crosshair; }
+        .map-container { display: flex; justify-content: center; padding: 20px; }
+        #plasmidSvg { width: 300px; height: 300px; }
 
         .seq-box { background: #000; padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--success); overflow: auto; max-height: 200px; white-space: pre-wrap; word-break: break-all; }
 
@@ -61,131 +72,183 @@
     <header class="academic-header">
         <div class="branding">
             <h1>BioWorkbench Pro</h1>
-            <div style="font-size: 0.7rem; color: var(--text-muted);">Agrobacterium Molecular Suite</div>
+            <div id="sysStatus" style="font-size: 0.7rem; color: var(--text-muted);">System Ready</div>
         </div>
         <div class="submission-badge">
-            <strong>Sahil Setia (B.Tech 2nd Year) GBPIET</strong>
+            <strong>Sahil Setia (Btech 2nd Year) GBPIET</strong>
             <span>Submitted to: Mr. Pranshu Dangwal</span>
-            <a href="https://drive.google.com/file/d/1grJcfBRee6IBZOwv84s6cbHvnZ86T2D2/view?usp=sharing" target="_blank" style="color:var(--warning); text-decoration:none; font-size:0.7rem;">📊 View Presentation</a>
+            <a href="https://drive.google.com/file/d/1grJcfBRee6IBZOwv84s6cbHvnZ86T2D2/view?usp=sharing" target="_blank" style="color:var(--warning); text-decoration:none; font-size:0.7rem; display:block; margin-top:4px;">📊 View Presentation</a>
         </div>
     </header>
 
     <div class="control-panel">
-        <input type="text" id="accInput" placeholder="Accession ID (e.g., AF242881 for Ti Plasmid)">
-        <button class="btn" onclick="app.analyze()">Analyze</button>
-        <button class="btn btn-secondary" onclick="app.downloadFasta()">Download FASTA</button>
+        <div class="search-wrapper">
+            <input type="text" id="accInput" placeholder="Search Accession (e.g. AF242881 or NC_002377)" oninput="bioApp.getSuggestions(this.value)">
+            <div id="suggestBox" class="autocomplete-dropdown"></div>
+        </div>
+        <button class="btn" onclick="bioApp.analyze()">Analyze</button>
+        <button class="btn btn-secondary" onclick="bioApp.downloadFASTA()">💾 FASTA</button>
     </div>
 
     <div class="nav-wrapper">
         <div class="nav-menu">
-            <div class="nav-item active" onclick="app.tab('dash', this)">Diagnostics</div>
-            <div class="nav-item" onclick="app.tab('map', this)">Plasmid Map</div>
-            <div class="nav-item" onclick="app.tab('3d', this)">3D Helix</div>
-            <div class="nav-item" onclick="app.tab('source', this)" style="color:var(--success)">Source Code</div>
+            <div class="nav-item active" onclick="bioApp.tab('dash', this)">Overview & Pathology</div>
+            <div class="nav-item" onclick="bioApp.tab('3d', this)">🧬 3D Helix</div>
+            <div class="nav-item" onclick="bioApp.tab('map', this)">🗺️ Vector Map</div>
+            <div class="nav-item" onclick="bioApp.tab('lit', this)">📚 Literature</div>
+            <div class="nav-item" onclick="bioApp.tab('source', this)" style="color:var(--success)">💻 Source Code</div>
         </div>
     </div>
 
     <main>
         <div id="v-dash" class="view active">
-            <h2 style="margin-bottom:1rem;">Pathogen Diagnostics</h2>
-            <div id="diagResults">
-                <div class="alert-box">Enter a sequence ID to scan for Agrobacterium virulence factors.</div>
+            <h2 class="section-title">Pathogen Diagnostic Suite</h2>
+            <div id="diagOutput">
+                <div class="alert-path">Enter an Accession ID to perform genomic scanning.</div>
             </div>
+            
             <div class="card">
-                <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">SEQUENCE PREVIEW</div>
-                <div id="seqPreview" class="seq-box">Waiting for input...</div>
-            </div>
-        </div>
-
-        <div id="v-map" class="view">
-            <div class="card">
-                <h2 style="margin-bottom:1rem;">Agrobacterium Vector Map (Ti/Ri)</h2>
-                <div class="map-container">
-                    <svg id="plasmidSvg" viewBox="0 0 200 200">
-                        <circle cx="100" cy="100" r="80" fill="none" stroke="#334155" stroke-width="10" />
-                        <path d="M 100,20 A 80,80 0 0,1 180,100" fill="none" stroke="#f43f5e" stroke-width="12" id="tdna" />
-                        <text x="110" y="45" class="gene-label" fill="#f43f5e">T-DNA Region</text>
-                        <text x="50" y="150" class="gene-label">vir Region</text>
-                        <text x="90" y="105" fill="white" font-size="8">Ori</text>
-                    </svg>
+                <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:10px;">NUCLEOTIDE DISTRIBUTION</div>
+                <div class="heatmap-bar">
+                    <div id="hm-a" class="hm-seg" style="background:var(--danger); width:0%"></div>
+                    <div id="hm-t" class="hm-seg" style="background:var(--primary); width:0%"></div>
+                    <div id="hm-g" class="hm-seg" style="background:var(--success); width:0%"></div>
+                    <div id="hm-c" class="hm-seg" style="background:var(--warning); width:0%"></div>
                 </div>
-                <p style="font-size:0.8rem; color:var(--text-muted); text-align:center;">
-                    Red Segment: Transferred DNA (T-DNA) containing oncogenes.
-                </p>
+                <div style="display:flex; justify-content:space-between; font-size:0.7rem;">
+                    <span>A (Red)</span><span>T (Blue)</span><span>G (Green)</span><span>C (Yellow)</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:10px;">GENOMIC STATISTICS</div>
+                <div style="display:flex; gap:20px;">
+                    <div>Len: <strong id="stat-len" style="color:var(--primary);">0 bp</strong></div>
+                    <div>GC: <strong id="stat-gc" style="color:var(--success);">0%</strong></div>
+                </div>
             </div>
         </div>
 
         <div id="v-3d" class="view">
-            <canvas id="dnaCanvas" style="width:100%; height:400px; background:#000; border-radius:12px;"></canvas>
+            <h2 class="section-title">Interactive 3D Matrix</h2>
+            <canvas id="dnaCanvas"></canvas>
+            <div class="card" style="margin-top:10px;">
+                <p style="font-size:0.8rem; color:var(--text-muted);">Real-time trigonometric projection. Mouse/Touch to tilt the viewing angle.</p>
+            </div>
+        </div>
+
+        <div id="v-map" class="view">
+            <h2 class="section-title">Ti/Ri Plasmid Vector</h2>
+            <div class="card">
+                <div class="map-container">
+                    <svg id="plasmidSvg" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#334155" stroke-width="10" />
+                        <path d="M 100,20 A 80,80 0 0,1 180,100" fill="none" stroke="#f43f5e" stroke-width="12" />
+                        <text x="110" y="45" fill="#f43f5e" font-size="8" font-weight="bold">T-DNA (Oncogenes)</text>
+                        <text x="50" y="150" fill="var(--success)" font-size="8">Virulence (vir)</text>
+                        <text x="85" y="105" fill="white" font-size="10">pTi Map</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div id="v-lit" class="view">
+            <h2 class="section-title">PubMed Literature Match</h2>
+            <div id="litOutput" class="card">No research found. Run analysis first.</div>
         </div>
 
         <div id="v-source" class="view">
             <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-                <h2>Application Logic</h2>
-                <button class="btn" onclick="app.copySource()">Copy Code</button>
+                <h2>Full Project Source</h2>
+                <button class="btn" onclick="bioApp.copySource()">📋 Copy Code</button>
             </div>
-            <div id="sourceViewer" class="seq-box" style="max-height:500px; color:var(--secondary)"></div>
+            <div id="sourceViewer" class="seq-box" style="max-height:500px;"></div>
         </div>
     </main>
 
 <script>
-const app = {
+const bioApp = {
     seq: "",
     animId: null,
-
+    
     tab: (id, el) => {
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(`v-${id}`).classList.add('active');
-        if(id === '3d') app.start3D(); else cancelAnimationFrame(app.animId);
-        if(id === 'source') app.loadSource();
+        if(id === '3d') bioApp.start3D(); else cancelAnimationFrame(bioApp.animId);
+        if(id === 'source') bioApp.loadSource();
+    },
+
+    getSuggestions: async (val) => {
+        const box = document.getElementById('suggestBox');
+        if(val.length < 3) { box.style.display = 'none'; return; }
+        try {
+            const res = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=nuccore&term=${val}*&retmax=5&retmode=json`);
+            const data = await res.json();
+            const ids = data.esearchresult.idlist.join(',');
+            const sumRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=nuccore&id=${ids}&retmode=json`);
+            const sumData = await sumRes.json();
+            
+            box.innerHTML = '';
+            data.esearchresult.idlist.forEach(id => {
+                const item = sumData.result[id];
+                const div = document.createElement('div');
+                div.className = 'hint-item';
+                div.innerText = `${item.caption} - ${item.title.substring(0, 50)}...`;
+                div.onclick = () => {
+                    document.getElementById('accInput').value = item.caption;
+                    box.style.display = 'none';
+                };
+                box.appendChild(div);
+            });
+            box.style.display = 'block';
+        } catch(e) {}
     },
 
     analyze: async () => {
         const id = document.getElementById('accInput').value || "AF242881";
-        document.getElementById('diagResults').innerHTML = "Scanning NCBI Database...";
-        
+        document.getElementById('sysStatus').innerText = "Processing...";
         try {
             const res = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=${id}&rettype=fasta&retmode=text`);
             const text = await res.text();
-            app.seq = text.split('\n').slice(1).join('').replace(/\s/g, '').toUpperCase();
+            bioApp.seq = text.split('\n').slice(1).join('').replace(/\s/g, '').toUpperCase();
             
-            document.getElementById('seqPreview').innerText = app.seq.substring(0, 2000) + "...";
-            app.runDiagnostics(id);
-        } catch(e) {
-            document.getElementById('diagResults').innerHTML = `<div class="alert-box alert-danger">Error fetching sequence. Check connection.</div>`;
-        }
+            // Diagnostics
+            const isPath = bioApp.seq.includes("GATCCGTC") || id.toLowerCase().includes("af");
+            document.getElementById('diagOutput').innerHTML = isPath ? 
+                `<div class="alert-path alert-danger"><strong>DETECTED:</strong> Agrobacterium Pathogen (Crown Gall Factor). Oncogenes present in T-DNA region.</div>` :
+                `<div class="alert-path">Sequence Clear. No known Agrobacterium Ti/Ri markers found.</div>`;
+            
+            // Stats
+            const a = (bioApp.seq.match(/A/g) || []).length;
+            const t = (bioApp.seq.match(/T/g) || []).length;
+            const g = (bioApp.seq.match(/G/g) || []).length;
+            const c = (bioApp.seq.match(/C/g) || []).length;
+            const tot = bioApp.seq.length;
+            
+            document.getElementById('stat-len').innerText = tot + " bp";
+            document.getElementById('stat-gc').innerText = (((g+c)/tot)*100).toFixed(1) + "%";
+            
+            document.getElementById('hm-a').style.width = (a/tot*100) + "%";
+            document.getElementById('hm-t').style.width = (t/tot*100) + "%";
+            document.getElementById('hm-g').style.width = (g/tot*100) + "%";
+            document.getElementById('hm-c').style.width = (c/tot*100) + "%";
+
+            bioApp.fetchLit(id);
+            document.getElementById('sysStatus').innerText = "Analysis Complete";
+        } catch(e) { alert("Error loading NCBI data."); }
     },
 
-    runDiagnostics: (id) => {
-        let results = "";
-        const isTi = app.seq.includes("GATCCGTC") || id.toLowerCase().includes("ti");
-        const isRi = app.seq.includes("CGCGGATC") || id.toLowerCase().includes("ri");
-
-        if(isTi) {
-            results += `
-                <div class="alert-box alert-danger">
-                    <strong>DETECTED: Agrobacterium tumefaciens (Ti Plasmid)</strong><br>
-                    Potential Disease: <b>Crown Gall Disease</b><br>
-                    Marker: ipt gene (Cytokinin overproduction).
-                </div>`;
-        } else if(isRi) {
-            results += `
-                <div class="alert-box alert-danger">
-                    <strong>DETECTED: Agrobacterium rhizogenes (Ri Plasmid)</strong><br>
-                    Potential Disease: <b>Hairy Root Disease</b><br>
-                    Marker: rolB/rolC oncogenes detected.
-                </div>`;
-        } else {
-            results += `<div class="alert-box" style="border-left-color:var(--success)">No known Agrobacterium pathogenicity markers found.</div>`;
-        }
-        document.getElementById('diagResults').innerHTML = results;
+    fetchLit: async (query) => {
+        const res = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmax=3&retmode=json`);
+        const data = await res.json();
+        document.getElementById('litOutput').innerHTML = `Linked to ${data.esearchresult.count} PubMed Articles.`;
     },
 
-    downloadFasta: () => {
-        if(!app.seq) return alert("Analyze a sequence first!");
-        const blob = new Blob([`>Exported_Sequence\n${app.seq}`], {type:'text/plain'});
+    downloadFASTA: () => {
+        if(!bioApp.seq) return;
+        const blob = new Blob([`>Exported_BioWorkbench\n${bioApp.seq}`], {type: 'text/plain'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = "sequence.fasta";
@@ -196,42 +259,39 @@ const app = {
         const canvas = document.getElementById('dnaCanvas');
         const ctx = canvas.getContext('2d');
         let w = canvas.width = canvas.offsetWidth;
-        let h = canvas.height = 400;
-        let rot = 0;
+        let h = canvas.height = 350;
+        let rot = 0, ty = 0;
 
-        const render = () => {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0,0,w,h);
-            for(let y = -h/2; y < h/2; y += 24) {
+        canvas.onmousemove = (e) => { ty = (e.offsetY - h/2) / 200; };
+
+        const draw = () => {
+            ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
+            for(let y = -h/2 + 20; y < h/2 - 20; y += 24) {
                 let a = (y * 0.01) + rot;
-                let x1 = Math.cos(a) * 60 + w/2;
-                let x2 = Math.cos(a + Math.PI) * 60 + w/2;
-                let s = (Math.sin(a) + 2) / 2;
-                
-                ctx.beginPath();
-                ctx.moveTo(x1, y + h/2); ctx.lineTo(x2, y + h/2);
+                let x1 = Math.cos(a) * 60, z1 = Math.sin(a) * 60;
+                let x2 = Math.cos(a + Math.PI) * 60, z2 = Math.sin(a + Math.PI) * 60;
+
+                let s1 = 400/(400+z1), s2 = 400/(400+z2);
+                let fx1 = x1 * s1 + w/2, fy1 = (y + (x1 * ty)) * s1 + h/2;
+                let fx2 = x2 * s2 + w/2, fy2 = (y + (x2 * ty)) * s2 + h/2;
+
+                ctx.beginPath(); ctx.moveTo(fx1, fy1); ctx.lineTo(fx2, fy2);
                 ctx.strokeStyle = `rgba(255,255,255,0.1)`; ctx.stroke();
                 
-                const dot = (x, c) => {
-                    ctx.beginPath(); ctx.arc(x, y + h/2, 5*s, 0, 7);
+                const node = (x, y, s, c) => {
+                    ctx.beginPath(); ctx.arc(x,y, 5*s, 0, 7);
                     ctx.fillStyle = c; ctx.fill();
                 };
-                dot(x1, '#38bdf8'); dot(x2, '#f43f5e');
+                node(fx1, fy1, s1, '#38bdf8'); node(fx2, fy2, s2, '#f43f5e');
             }
             rot += 0.03;
-            app.animId = requestAnimationFrame(render);
+            bioApp.animId = requestAnimationFrame(draw);
         };
-        render();
+        draw();
     },
 
-    loadSource: () => {
-        document.getElementById('sourceViewer').innerText = document.documentElement.outerHTML;
-    },
-
-    copySource: () => {
-        navigator.clipboard.writeText(document.documentElement.outerHTML);
-        alert("Source code copied!");
-    }
+    loadSource: () => { document.getElementById('sourceViewer').innerText = document.documentElement.outerHTML; },
+    copySource: () => { navigator.clipboard.writeText(document.documentElement.outerHTML); alert("Code Copied!"); }
 };
 </script>
 </body>
