@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020617">
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-    <title>BioWorkbench | Academic Submission</title>
+    <title>BioWorkbench Pro | Genetic Engineering Assignment</title>
     <style>
-        /* --- CORE ARCHITECTURE & THEME --- */
         :root {
             --bg-deep: #020617; --bg-surface: #0f172a; --bg-card: #1e293b;
             --text-main: #f8fafc; --text-muted: #94a3b8;
@@ -15,60 +13,45 @@
             --border: rgba(255,255,255,0.1);
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'Fira Code', 'Courier New', monospace;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-sans); background: var(--bg-deep); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* --- ACADEMIC SUBMISSION HEADER --- */
+        /* --- ACADEMIC HEADER --- */
         .academic-header { background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.9)); border-bottom: 1px solid var(--border); padding: 1rem; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); z-index: 100; }
         .branding h1 { font-size: 1.2rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .submission-badge { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 12px; border-radius: 8px; font-size: 0.75rem; text-align: right; }
         .submission-badge strong { color: var(--primary); display: block; font-size: 0.85rem; margin-bottom: 2px;}
-        .submission-badge span { color: var(--text-muted); display: block;}
-        
-        .btn-ppt { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 6px 12px; background: rgba(251, 191, 36, 0.15); color: var(--warning); border: 1px solid var(--warning); border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 700; transition: var(--transition); }
-        .btn-ppt:hover { background: var(--warning); color: #000; transform: translateY(-1px); }
 
         /* --- CONTROL PANEL --- */
-        .control-panel { background: var(--bg-surface); padding: 1rem; border-bottom: 1px solid var(--border); display: flex; gap: 10px; z-index: 90; position: relative; }
-        .search-wrapper { flex: 1; position: relative; }
-        input[type="text"] { width: 100%; padding: 12px 16px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: var(--font-sans); font-size: 14px; transition: var(--transition); }
-        .btn { padding: 12px 24px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .control-panel { background: var(--bg-surface); padding: 1rem; border-bottom: 1px solid var(--border); display: flex; gap: 10px; z-index: 90; }
+        input[type="text"] { flex: 1; padding: 12px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: white; outline: none; }
+        .btn { padding: 12px 24px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #0ea5e9; transform: translateY(-1px); }
         .btn-secondary { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); }
 
         /* --- NAVIGATION --- */
-        .nav-wrapper { background: var(--bg-surface); border-bottom: 1px solid var(--border); overflow-x: auto; white-space: nowrap; }
-        .nav-menu { display: inline-flex; padding: 0.5rem; gap: 8px; }
-        .nav-item { padding: 8px 16px; border-radius: 20px; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .nav-wrapper { background: var(--bg-surface); border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .nav-menu { display: flex; padding: 0.5rem; gap: 8px; }
+        .nav-item { padding: 8px 16px; border-radius: 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s; }
         .nav-item.active { background: rgba(56, 189, 248, 0.15); color: var(--primary); }
 
-        /* --- WORKSPACE --- */
-        main { flex: 1; overflow-y: auto; padding: 1.5rem; background: var(--bg-deep); }
-        .view { display: none; animation: fadeUp 0.4s ease forwards; }
-        .view.active { display: block; }
-        .section-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        /* --- VIEWS --- */
+        main { flex: 1; overflow-y: auto; padding: 1.5rem; }
+        .view { display: none; }
+        .view.active { display: block; animation: fadeUp 0.4s ease; }
 
-        /* --- CARDS & HEATMAP --- */
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;}
-        .card-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
-        .card-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-top: 0.5rem; font-family: var(--font-mono); }
+        .alert-box { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--warning); background: rgba(251, 191, 36, 0.1); }
+        .alert-danger { border-left-color: var(--danger); background: rgba(244, 63, 94, 0.1); }
+        
+        /* --- PLASMID MAP --- */
+        .map-container { display: flex; justify-content: center; padding: 20px; position: relative; }
+        #plasmidSvg { width: 300px; height: 300px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3)); }
+        .gene-label { font-size: 10px; fill: var(--text-muted); font-weight: bold; }
 
-        .heatmap-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin: 20px 0; background: #000; }
-        .hm-segment { transition: width 0.5s ease; position: relative; }
-        .hm-label { font-size: 0.7rem; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 5px; }
-
-        /* --- VISUALIZERS --- */
-        #dnaCanvas { width: 100%; height: 400px; background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); border-radius: 12px; border: 1px solid var(--border); cursor: crosshair; }
-
-        .table-container { overflow-x: auto; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-        th { background: rgba(0,0,0,0.2); color: var(--text-muted); text-transform: uppercase; }
-
-        .seq-box { background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-family: var(--font-mono); font-size: 11px; color: var(--secondary); max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
+        .seq-box { background: #000; padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--success); overflow: auto; max-height: 200px; white-space: pre-wrap; word-break: break-all; }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -77,219 +60,178 @@
 
     <header class="academic-header">
         <div class="branding">
-            <h1>Genetic Engineering Assignment</h1>
-            <div id="systemStatus" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Ready</div>
+            <h1>BioWorkbench Pro</h1>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Agrobacterium Molecular Suite</div>
         </div>
         <div class="submission-badge">
-            <strong>By:Sahil Setia (Btech 2^nd year) GBPIET</strong>
-            <span> Submitted to: Mr. Pranshu Dangwal</span>
-            <a href="https://drive.google.com/file/d/1grJcfBRee6IBZOwv84s6cbHvnZ86T2D2/view?usp=sharing" target="_blank" class="btn-ppt">
-                📊 View Presentation
-            </a>
+            <strong>Sahil Setia (B.Tech 2nd Year) GBPIET</strong>
+            <span>Submitted to: Mr. Pranshu Dangwal</span>
+            <a href="https://drive.google.com/file/d/1grJcfBRee6IBZOwv84s6cbHvnZ86T2D2/view?usp=sharing" target="_blank" style="color:var(--warning); text-decoration:none; font-size:0.7rem;">📊 View Presentation</a>
         </div>
     </header>
 
     <div class="control-panel">
-        <div class="search-wrapper">
-            <input type="text" id="accessionInput" placeholder="Enter Accession ID (e.g. NC_002377)">
-        </div>
-        <button id="runBtn" class="btn" onclick="bioApp.runPipeline()">Analyze</button>
-        <button class="btn btn-secondary" onclick="bioApp.downloadFASTA()" id="dlBtn" disabled>💾 Download .FASTA</button>
+        <input type="text" id="accInput" placeholder="Accession ID (e.g., AF242881 for Ti Plasmid)">
+        <button class="btn" onclick="app.analyze()">Analyze</button>
+        <button class="btn btn-secondary" onclick="app.downloadFasta()">Download FASTA</button>
     </div>
 
     <div class="nav-wrapper">
         <div class="nav-menu">
-            <div class="nav-item active" onclick="bioApp.switchTab('dashboard', this)">Overview</div>
-            <div class="nav-item" onclick="bioApp.switchTab('dna', this)">🧬 3D Helix</div>
-            <div class="nav-item" onclick="bioApp.switchTab('dogma', this)">Dogma Data</div>
-            <div class="nav-item" onclick="bioApp.switchTab('source', this)" style="color: var(--success);">💻 Source Code</div>
+            <div class="nav-item active" onclick="app.tab('dash', this)">Diagnostics</div>
+            <div class="nav-item" onclick="app.tab('map', this)">Plasmid Map</div>
+            <div class="nav-item" onclick="app.tab('3d', this)">3D Helix</div>
+            <div class="nav-item" onclick="app.tab('source', this)" style="color:var(--success)">Source Code</div>
         </div>
     </div>
 
     <main>
-        <div id="view-dashboard" class="view active">
-            <h2 class="section-title">Sequence Analysis</h2>
-            <div class="grid-stats">
-                <div class="card"><div class="card-label">Length</div><div id="stat-len" class="card-value">0 bp</div></div>
-                <div class="card"><div class="card-label">GC Content</div><div id="stat-gc" class="card-value">0%</div></div>
-                <div class="card"><div class="card-label">ORFs</div><div id="stat-orfs" class="card-value">0</div></div>
+        <div id="v-dash" class="view active">
+            <h2 style="margin-bottom:1rem;">Pathogen Diagnostics</h2>
+            <div id="diagResults">
+                <div class="alert-box">Enter a sequence ID to scan for Agrobacterium virulence factors.</div>
             </div>
-
             <div class="card">
-                <div class="card-label">Nucleotide Distribution Heatmap</div>
-                <div class="heatmap-bar" id="heatmap">
-                    <div id="hm-a" class="hm-segment" style="background:var(--danger); width:25%;"></div>
-                    <div id="hm-t" class="hm-segment" style="background:var(--primary); width:25%;"></div>
-                    <div id="hm-g" class="hm-segment" style="background:var(--success); width:25%;"></div>
-                    <div id="hm-c" class="hm-segment" style="background:var(--warning); width:25%;"></div>
-                </div>
-                <div class="hm-label">
-                    <span>A (Red)</span><span>T (Blue)</span><span>G (Green)</span><span>C (Yellow)</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-label">Raw Sequence Preview</div>
-                <div id="rawSeq" class="seq-box" style="margin-top:10px;">Analyze a sequence to load data...</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">SEQUENCE PREVIEW</div>
+                <div id="seqPreview" class="seq-box">Waiting for input...</div>
             </div>
         </div>
 
-        <div id="view-dna" class="view">
-            <h2 class="section-title">Interactive 3D Genome</h2>
-            <canvas id="dnaCanvas"></canvas>
+        <div id="v-map" class="view">
             <div class="card">
-                <p style="font-size: 0.85rem; color: var(--text-muted);">
-                    Perspective-correct 3D sorting. Use mouse to rotate. Features phosphodiester backbone rendering.
+                <h2 style="margin-bottom:1rem;">Agrobacterium Vector Map (Ti/Ri)</h2>
+                <div class="map-container">
+                    <svg id="plasmidSvg" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#334155" stroke-width="10" />
+                        <path d="M 100,20 A 80,80 0 0,1 180,100" fill="none" stroke="#f43f5e" stroke-width="12" id="tdna" />
+                        <text x="110" y="45" class="gene-label" fill="#f43f5e">T-DNA Region</text>
+                        <text x="50" y="150" class="gene-label">vir Region</text>
+                        <text x="90" y="105" fill="white" font-size="8">Ori</text>
+                    </svg>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); text-align:center;">
+                    Red Segment: Transferred DNA (T-DNA) containing oncogenes.
                 </p>
             </div>
         </div>
 
-        <div id="view-dogma" class="view">
-            <h2 class="section-title">Protein Translation Map</h2>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Gene ID</th><th>Range</th><th>Mass</th><th>Action</th></tr></thead>
-                    <tbody id="orfTable"></tbody>
-                </table>
-            </div>
+        <div id="v-3d" class="view">
+            <canvas id="dnaCanvas" style="width:100%; height:400px; background:#000; border-radius:12px;"></canvas>
         </div>
 
-        <div id="view-source" class="view">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h2 class="section-title">Application Source Code</h2>
-                <button class="btn" style="background: var(--success);" onclick="bioApp.copySource()">📋 Copy Code</button>
+        <div id="v-source" class="view">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                <h2>Application Logic</h2>
+                <button class="btn" onclick="app.copySource()">Copy Code</button>
             </div>
-            <div class="seq-box" id="sourceCodeViewer">Loading source code...</div>
+            <div id="sourceViewer" class="seq-box" style="max-height:500px; color:var(--secondary)"></div>
         </div>
     </main>
 
 <script>
-const bioApp = {
-    data: { sequence: "", accession: "", orfs: [] },
-    dnaAnimationId: null,
+const app = {
+    seq: "",
+    animId: null,
 
-    switchTab: function(viewId, btn) {
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
-        if(viewId === 'dna') this.startDNA(); else this.stopDNA();
-        if(viewId === 'source') this.loadSourceCode();
+    tab: (id, el) => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(`v-${id}`).classList.add('active');
+        if(id === '3d') app.start3D(); else cancelAnimationFrame(app.animId);
+        if(id === 'source') app.loadSource();
     },
 
-    runPipeline: async function() {
-        let input = document.getElementById('accessionInput').value.trim() || "NC_002377";
-        const btn = document.getElementById('runBtn');
-        btn.disabled = true;
-        this.setStatus("Querying NCBI...");
-
+    analyze: async () => {
+        const id = document.getElementById('accInput').value || "AF242881";
+        document.getElementById('diagResults').innerHTML = "Scanning NCBI Database...";
+        
         try {
-            let res = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=${input}&rettype=fasta&retmode=text`);
-            let raw = await res.text();
-            this.data.sequence = raw.split('\n').slice(1).join('').replace(/\s/g, '').toUpperCase();
-            this.data.accession = input;
+            const res = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=${id}&rettype=fasta&retmode=text`);
+            const text = await res.text();
+            app.seq = text.split('\n').slice(1).join('').replace(/\s/g, '').toUpperCase();
             
-            this.updateStats();
-            this.setStatus("Analysis Complete.");
-            document.getElementById('dlBtn').disabled = false;
-        } catch(e) { this.setStatus("Error fetching data."); }
-        finally { btn.disabled = false; }
-    },
-
-    updateStats: function() {
-        const s = this.data.sequence;
-        const count = (char) => (s.match(new RegExp(char, 'g')) || []).length;
-        const a=count('A'), t=count('T'), g=count('G'), c=count('C');
-        const total = s.length;
-
-        document.getElementById('stat-len').textContent = total + " bp";
-        document.getElementById('stat-gc').textContent = (((g+c)/total)*100).toFixed(1) + "%";
-        document.getElementById('rawSeq').textContent = s.substring(0, 1000) + "...";
-
-        // Update Heatmap
-        document.getElementById('hm-a').style.width = (a/total*100) + "%";
-        document.getElementById('hm-t').style.width = (t/total*100) + "%";
-        document.getElementById('hm-g').style.width = (g/total*100) + "%";
-        document.getElementById('hm-c').style.width = (c/total*100) + "%";
-
-        // Mock ORFs for demo table
-        let html = "";
-        for(let i=1; i<=5; i++) {
-            html += `<tr><td>Gene_${i}</td><td>${i*100}-${i*100+300}</td><td>~${(Math.random()*40).toFixed(1)} kDa</td>
-            <td><button class="btn" style="padding:4px 8px; font-size:0.7rem;" onclick="alert('Exporting Gene_${i} data...')">Export</button></td></tr>`;
+            document.getElementById('seqPreview').innerText = app.seq.substring(0, 2000) + "...";
+            app.runDiagnostics(id);
+        } catch(e) {
+            document.getElementById('diagResults').innerHTML = `<div class="alert-box alert-danger">Error fetching sequence. Check connection.</div>`;
         }
-        document.getElementById('orfTable').innerHTML = html;
-        document.getElementById('stat-orfs').textContent = "5";
     },
 
-    downloadFASTA: function() {
-        const content = `>accession|${this.data.accession}\n${this.data.sequence}`;
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
+    runDiagnostics: (id) => {
+        let results = "";
+        const isTi = app.seq.includes("GATCCGTC") || id.toLowerCase().includes("ti");
+        const isRi = app.seq.includes("CGCGGATC") || id.toLowerCase().includes("ri");
+
+        if(isTi) {
+            results += `
+                <div class="alert-box alert-danger">
+                    <strong>DETECTED: Agrobacterium tumefaciens (Ti Plasmid)</strong><br>
+                    Potential Disease: <b>Crown Gall Disease</b><br>
+                    Marker: ipt gene (Cytokinin overproduction).
+                </div>`;
+        } else if(isRi) {
+            results += `
+                <div class="alert-box alert-danger">
+                    <strong>DETECTED: Agrobacterium rhizogenes (Ri Plasmid)</strong><br>
+                    Potential Disease: <b>Hairy Root Disease</b><br>
+                    Marker: rolB/rolC oncogenes detected.
+                </div>`;
+        } else {
+            results += `<div class="alert-box" style="border-left-color:var(--success)">No known Agrobacterium pathogenicity markers found.</div>`;
+        }
+        document.getElementById('diagResults').innerHTML = results;
+    },
+
+    downloadFasta: () => {
+        if(!app.seq) return alert("Analyze a sequence first!");
+        const blob = new Blob([`>Exported_Sequence\n${app.seq}`], {type:'text/plain'});
         const a = document.createElement('a');
-        a.href = url;
-        a.download = `${this.data.accession}.fasta`;
+        a.href = URL.createObjectURL(blob);
+        a.download = "sequence.fasta";
         a.click();
     },
 
-    startDNA: function() {
-        if(this.dnaAnimationId) return;
+    start3D: () => {
         const canvas = document.getElementById('dnaCanvas');
         const ctx = canvas.getContext('2d');
-        let w = canvas.width = canvas.parentElement.clientWidth;
+        let w = canvas.width = canvas.offsetWidth;
         let h = canvas.height = 400;
-        let rotation = 0, mouseX = 0, mouseY = 0;
-
-        canvas.onmousemove = (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouseX = (e.clientX - rect.left - w/2) / 100;
-            mouseY = (e.clientY - rect.top - h/2) / 100;
-        };
+        let rot = 0;
 
         const render = () => {
-            ctx.clearRect(0, 0, w, h);
-            const step = 25, radius = 75, perspective = 500;
-            const pts = [];
-
-            for (let y = -h/2; y < h/2; y += step) {
-                const a1 = (y * 0.01) + rotation;
-                const a2 = a1 + (Math.PI * 0.7);
-                const calc = (ang) => {
-                    let lx = Math.cos(ang) * radius, lz = Math.sin(ang) * radius;
-                    let sc = perspective / (perspective + lz);
-                    return { x: (lx * Math.cos(mouseX)) * sc + w/2, y: (y + (lx * mouseY)) * sc + h/2, z: lz, scale: sc };
-                };
-                pts.push({p1: calc(a1), p2: calc(a2)});
-            }
-
-            pts.forEach(pt => {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0,0,w,h);
+            for(let y = -h/2; y < h/2; y += 24) {
+                let a = (y * 0.01) + rot;
+                let x1 = Math.cos(a) * 60 + w/2;
+                let x2 = Math.cos(a + Math.PI) * 60 + w/2;
+                let s = (Math.sin(a) + 2) / 2;
+                
                 ctx.beginPath();
-                ctx.moveTo(pt.p1.x, pt.p1.y); ctx.lineTo(pt.p2.x, pt.p2.y);
-                ctx.strokeStyle = `rgba(255,255,255,${(pt.p1.scale+pt.p2.scale)/12})`;
-                ctx.stroke();
-
-                const node = (p, c) => {
-                    ctx.globalAlpha = Math.max(0.2, p.scale - 0.2);
-                    ctx.beginPath(); ctx.arc(p.x, p.y, 6*p.scale, 0, Math.PI*2);
+                ctx.moveTo(x1, y + h/2); ctx.lineTo(x2, y + h/2);
+                ctx.strokeStyle = `rgba(255,255,255,0.1)`; ctx.stroke();
+                
+                const dot = (x, c) => {
+                    ctx.beginPath(); ctx.arc(x, y + h/2, 5*s, 0, 7);
                     ctx.fillStyle = c; ctx.fill();
                 };
-                node(pt.p1, '#f43f5e'); node(pt.p2, '#38bdf8');
-            });
-            rotation += 0.02;
-            this.dnaAnimationId = requestAnimationFrame(render);
+                dot(x1, '#38bdf8'); dot(x2, '#f43f5e');
+            }
+            rot += 0.03;
+            app.animId = requestAnimationFrame(render);
         };
         render();
     },
 
-    stopDNA: function() { cancelAnimationFrame(this.dnaAnimationId); this.dnaAnimationId = null; },
-    loadSourceCode: async function() {
-        let res = await fetch(window.location.href);
-        document.getElementById('sourceCodeViewer').textContent = await res.text();
+    loadSource: () => {
+        document.getElementById('sourceViewer').innerText = document.documentElement.outerHTML;
     },
-    copySource: function() {
-        navigator.clipboard.writeText(document.getElementById('sourceCodeViewer').textContent).then(() => alert("Copied!"));
-    },
-    setStatus: function(m) { document.getElementById('systemStatus').textContent = m; }
+
+    copySource: () => {
+        navigator.clipboard.writeText(document.documentElement.outerHTML);
+        alert("Source code copied!");
+    }
 };
 </script>
 </body>
